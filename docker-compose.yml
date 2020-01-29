@@ -1,27 +1,19 @@
 version: '3'
 services:
+  nginx:
+    restart: always
+    build:
+      context: './nginx'
+      dockerfile: 'Dockerfile'
+    ports:
+      - '3050:80'
   webapp1:
     build: .
-    ports:
-      - '5002:5000'
     volumes:
       - ./:/app/hello_world
     environment:
       - NAME='Nashawn'
-
-  # webapp2:
-  #   build: .
-  #   ports:
-  #     - '5003:5000'
-  #   volumes:
-  #     - ./:/app/hello_world
-  loadbalancer:
-    build:
-      context: './nginx'
-      dockerfile: 'Dockerfile'
-    restart: always
-    ports:
-      - '5001:80'
-    depends_on:
-      # - webapp2
-      - webapp1
+  webapp2:
+    build: .
+    volumes:
+      - ./:/app/hello_world
